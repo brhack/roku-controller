@@ -11,178 +11,623 @@
     :root {
       --bg: #14120e;
       --bg-elev: #1c1914;
-      --surface: #262219;
-      --surface-2: #312c23;
-      --line: #40392e;
-      --fg: #f4efe6;
-      --muted: #b3a594;
-      --faint: #7c7266;
-      --accent: #e25b2a;
-      --accent-ink: #2a120b;
-      --led: #f0c14a;
-      --ok: #8fbf7a;
-      --danger: #e07a72;
-      --ink: #0c0b09;
-      --sans: "Instrument Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+      --bg-card: #23201a;
+      --border: #3a342c;
+      --text: #f5f0e8;
+      --text-muted: #a89f90;
+      --accent: #e8a54b;
+      --accent-dim: #c4893a;
+      --ok: #6bcf7f;
+      --danger: #e86a5a;
+      --remote-bg: #1a1712;
+      --btn: #2a2520;
+      --btn-hover: #3a342c;
+      --radius: 16px;
+      --font: "Instrument Sans", system-ui, sans-serif;
       --display: "Fraunces", Georgia, serif;
     }
-    * { box-sizing: border-box; }
-    html { color-scheme: dark; }
-    body { margin: 0; min-height: 100%; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.5; overflow-x: clip; }
-    button, input, select, textarea { font: inherit; color: inherit; }
-    button { cursor: pointer; }
-    button:disabled { cursor: not-allowed; opacity: 0.45; }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .page { max-width: 64rem; margin: 0 auto; padding: 1.25rem 1rem max(2rem, env(safe-area-inset-bottom)); }
-    header { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; justify-content: space-between; margin-bottom: 1.5rem; }
-    .brand { display: flex; align-items: center; gap: 0.75rem; }
-    .mark { width: 0.7rem; height: 0.7rem; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0.7rem var(--accent); }
-    h1 { margin: 0; font-family: var(--display); font-size: 2.25rem; line-height: 1; font-weight: 600; }
-    .sub { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.9rem; }
-    .layout { display: grid; gap: 1.25rem; }
-    @media (min-width: 64rem) { .layout { grid-template-columns: minmax(0, 1fr) 22.5rem; align-items: start; } .remote-shell { position: sticky; top: 1.25rem; } }
-    @media (max-width: 63.99rem) { .layout { display: flex; flex-direction: column; } .stage-col { display: contents; } .stage-screen { order: 1; } .remote-shell { order: 2; } .stage-rest { order: 3; } }
-    .bezel { background: var(--ink); border: 1px solid var(--line); border-radius: 1.5rem; padding: 0.7rem; }
-    .screen { min-height: 7.5rem; border-radius: 1.05rem; padding: 1rem 1.1rem; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.3rem; background: radial-gradient(120% 90% at 50% -10%, color-mix(in oklab, var(--led) 16%, transparent), transparent 58%), var(--ink); }
-    @media (min-width: 64rem) { .screen { min-height: 12rem; } }
-    .screen-title { margin: 0; font-family: var(--display); font-weight: 560; font-size: clamp(1.7rem, 4.6vw, 3rem); line-height: 1.08; letter-spacing: -0.03em; }
-    .led { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--faint); display: inline-block; }
-    .led-online { background: var(--ok); box-shadow: 0 0 0.55rem var(--ok); }
-    .led-offline { background: var(--danger); }
-    .led-checking { background: var(--led); animation: pulse 1.2s ease-in-out infinite; }
-    @keyframes pulse { 50% { opacity: 0.35; } }
-    .remote-shell { background: linear-gradient(180deg, color-mix(in oklab, var(--surface) 88%, white), var(--bg-elev)); border: 1px solid var(--line); border-radius: 2rem; padding: 0.9rem; box-shadow: inset 0 1px 0 color-mix(in oklab, white 10%, transparent), 0 22px 40px color-mix(in oklab, black 32%, transparent); user-select: none; }
-    .pad, .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
-    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-    .keycap { min-height: 3.25rem; border-radius: 0.95rem; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.35rem; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform 120ms ease; }
-    .keycap:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
-    .keycap-accent { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 700; letter-spacing: 0.06em; }
-    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; padding: 0.25rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); margin: 0.75rem 0; }
-    .tab { min-height: 2.75rem; border: 0; border-radius: 999px; background: transparent; color: var(--muted); }
-    .tab[aria-selected="true"] { background: var(--surface); color: var(--fg); }
-    .btn { min-height: 2.75rem; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); touch-action: manipulation; }
-    .btn-accent { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 650; }
-    .field { min-height: 2.75rem; width: 100%; border-radius: 0.85rem; border: 1px solid var(--line); background: var(--bg); color: var(--fg); padding: 0 0.8rem; }
-    .field::placeholder { color: var(--faint); }
-    textarea.field { min-height: 7rem; padding: 0.75rem 0.8rem; resize: vertical; }
-    .scroller { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .chip { flex: none; min-height: 2.75rem; padding: 0 0.9rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
-    dialog.sheet { width: min(28rem, calc(100vw - 1.5rem)); max-height: min(86vh, 42rem); padding: 0; border: 1px solid var(--line); border-radius: 1.25rem; background: var(--bg-elev); color: var(--fg); }
-    dialog.sheet::backdrop { background: color-mix(in oklab, black 64%, transparent); }
-    .sheet-body { max-height: min(86vh, 42rem); overflow: auto; padding: 1.15rem; display: flex; flex-direction: column; gap: 1rem; }
-    .muted { color: var(--muted); font-size: 0.9rem; }
-    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-    .device-item { display: flex; gap: 0.5rem; align-items: center; border: 1px solid var(--line); border-radius: 0.85rem; padding: 0.5rem 0.75rem; background: var(--bg); }
-    .device-item button.pick { flex: 1; text-align: left; border: 0; background: transparent; min-height: 2.75rem; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-    .hint { margin: 0.75rem 0; color: var(--muted); font-size: 0.9rem; }
-    .status-line { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.85rem; }
-    @media (prefers-reduced-motion: reduce) { .led-checking { animation: none; } .keycap, .keycap:active { transition: none; transform: none; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 100dvh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    header h1 {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.9rem;
+    }
+    .led {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .led.on { background: var(--ok); box-shadow: 0 0 8px var(--ok); animation: pulse 2s ease infinite; }
+    .led.warn { background: var(--accent); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
+    .status-bar .name { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .status-bar .ip { color: var(--text-muted); font-size: 0.8rem; }
+    .remote {
+      background: linear-gradient(160deg, #1f1b16 0%, #15120e 100%);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 20px 16px 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      min-width: 52px; min-height: 52px;
+      padding: 10px 14px;
+      background: var(--btn);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.12s, transform 0.08s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    .btn:hover { background: var(--btn-hover); }
+    .btn:active, .btn.pressed { transform: scale(0.94); background: #3d3630; }
+    .btn.primary { background: var(--accent); color: #1a140c; border-color: var(--accent-dim); }
+    .btn.primary:hover { filter: brightness(1.05); }
+    .btn.ghost { background: transparent; border-color: transparent; color: var(--text-muted); }
+    .dpad {
+      display: grid;
+      grid-template-columns: 64px 64px 64px;
+      grid-template-rows: 64px 64px 64px;
+      gap: 6px;
+      margin: 0 auto;
+    }
+    .dpad .btn { min-width: 64px; min-height: 64px; border-radius: 18px; font-size: 1.1rem; }
+    .dpad .ok { grid-column: 2; grid-row: 2; background: var(--accent); color: #1a140c; border-color: var(--accent-dim); }
+    .dpad .up { grid-column: 2; grid-row: 1; }
+    .dpad .left { grid-column: 1; grid-row: 2; }
+    .dpad .right { grid-column: 3; grid-row: 2; }
+    .dpad .down { grid-column: 2; grid-row: 3; }
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: -6px;
+    }
+    .channels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .channels .btn { min-height: 44px; font-size: 0.75rem; padding: 8px; }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .toolbar .btn { flex: 1; min-width: 0; font-size: 0.8rem; }
+    dialog {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      color: var(--text);
+      padding: 0;
+      max-width: 400px;
+      width: calc(100% - 32px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    dialog::backdrop { background: rgba(0,0,0,0.65); }
+    .dialog-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .dialog-body h2 { font-family: var(--display); font-size: 1.15rem; }
+    .dialog-body label { font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .dialog-body input, .dialog-body select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .dialog-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+    .hint { font-size: 0.8rem; color: var(--text-muted); }
+    .hint.error { color: var(--danger); }
+    .hint.ok { color: var(--ok); }
+    .device-list { display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow: auto; }
+    .device-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .device-item:hover, .device-item.active { border-color: var(--accent); }
+    .device-item .meta { flex: 1; min-width: 0; }
+    .device-item .meta strong { display: block; font-size: 0.9rem; }
+    .device-item .meta span { font-size: 0.75rem; color: var(--text-muted); }
+    .footer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .footer-actions .btn { flex: 1; }
+    .text-input-row { display: flex; gap: 8px; }
+    .text-input-row input { flex: 1; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+    @media (max-width: 380px) {
+      .dpad { grid-template-columns: 56px 56px 56px; grid-template-rows: 56px 56px 56px; }
+      .dpad .btn { min-width: 56px; min-height: 56px; }
+    }
   </style>
 </head>
 <body>
-  <main class="page">
+  <div class="app">
     <header>
-      <div class="brand">
-        <span class="mark" aria-hidden="true"></span>
-        <div>
-          <h1>SALA</h1>
-          <p class="sub">Control para los Roku de tu red</p>
-        </div>
-      </div>
-      <div class="row">
-        <select id="deviceSelect" class="field" style="width:auto;min-width:10rem" aria-label="Televisor activo" hidden></select>
-        <button type="button" class="btn btn-accent" id="openDevices">Agregar Roku</button>
-      </div>
+      <h1>SALA</h1>
+      <span class="badge" id="modeBadge">local</span>
     </header>
-    <div class="layout">
-      <section class="stage-col">
-        <div class="stage-screen">
-          <div class="bezel">
-            <div class="screen">
-              <div class="status-line"><span class="led" id="led"></span><span id="linkLabel">En espera</span></div>
-              <p class="muted" id="deviceLine">Sin televisor</p>
-              <p class="screen-title" id="screenTitle" data-screen>En espera</p>
-              <p class="muted" id="deliveryLine">Prueba el mando aquí. Con una IP, salen de verdad.</p>
-            </div>
-          </div>
-          <p class="hint" id="hint">Misma Wi-Fi · permiso de red local · control móvil activado en el Roku</p>
-        </div>
-        <div class="stage-rest">
-          <h2 class="muted" style="font-size:0.9rem;margin:0 0 0.5rem">Canales</h2>
-          <div class="scroller" id="channels"></div>
-          <form id="launchForm" class="row" style="margin-top:0.75rem">
-            <label class="sr-only" for="channelId">Número de canal</label>
-            <input id="channelId" class="field" style="flex:1;min-width:0" inputmode="numeric" placeholder="Número de canal" />
-            <button type="submit" class="btn">Abrir</button>
-          </form>
-          <p class="muted" style="margin-top:0.75rem">Las órdenes salen de este navegador al televisor. No pasan por un servidor.</p>
-        </div>
-      </section>
-      <div class="remote-shell" id="remote">
-        <div class="duo">
-          <button type="button" class="keycap" data-key="PowerOn">Encender</button>
-          <button type="button" class="keycap" data-key="PowerOff">Apagar</button>
-        </div>
-        <div class="tabs" role="tablist">
-          <button type="button" class="tab" role="tab" data-tab="mando" aria-selected="true">Mando</button>
-          <button type="button" class="tab" role="tab" data-tab="tv" aria-selected="false">TV</button>
-          <button type="button" class="tab" role="tab" data-tab="texto" aria-selected="false">Texto</button>
-        </div>
-        <div id="panel-mando">
-          <div class="pad" id="pad"></div>
-          <div class="trio" style="margin-top:0.5rem" id="transport"></div>
-          <div class="trio" style="margin-top:0.5rem" id="volume"></div>
-        </div>
-        <div id="panel-tv" hidden>
-          <div class="duo">
-            <button type="button" class="keycap" data-key="ChannelUp">Canal +</button>
-            <button type="button" class="keycap" data-key="ChannelDown">Canal −</button>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.5rem" id="inputs"></div>
-          <button type="button" class="keycap" style="width:100%;margin-top:0.5rem" data-key="FindRemote">Hacer sonar el control</button>
-        </div>
-        <div id="panel-texto" hidden>
-          <form id="textForm">
-            <label class="muted" for="tvText">Se escribe en lo que esté abierto en el televisor</label>
-            <textarea id="tvText" class="field" maxlength="120" placeholder="Buscar una película, un canal…"></textarea>
-            <button type="submit" class="btn btn-accent" style="width:100%;margin-top:0.5rem">Enviar al televisor</button>
-          </form>
-          <div class="trio" style="margin-top:0.5rem">
-            <button type="button" class="keycap" data-key="Search">Buscar</button>
-            <button type="button" class="keycap" data-key="Backspace">Borrar</button>
-            <button type="button" class="keycap" data-key="Enter">Enter</button>
-          </div>
-        </div>
+
+    <div class="status-bar" id="statusBar">
+      <span class="led" id="led"></span>
+      <span class="name" id="deviceName">Sin dispositivo</span>
+      <span class="ip" id="deviceIp"></span>
+    </div>
+
+    <div class="remote" id="remote">
+      <div class="section-label">Navegación</div>
+      <div class="dpad">
+        <button class="btn up" data-key="Up" title="Arriba">▲</button>
+        <button class="btn left" data-key="Left" title="Izquierda">◀</button>
+        <button class="btn ok" data-key="Select" title="OK">OK</button>
+        <button class="btn right" data-key="Right" title="Derecha">▶</button>
+        <button class="btn down" data-key="Down" title="Abajo">▼</button>
+      </div>
+
+      <div class="row">
+        <button class="btn" data-key="Back">Atrás</button>
+        <button class="btn" data-key="Home">Inicio</button>
+        <button class="btn" data-key="Info">*</button>
+      </div>
+
+      <div class="section-label">Reproducción</div>
+      <div class="row">
+        <button class="btn" data-key="Rev">⏮</button>
+        <button class="btn" data-key="Play">⏯</button>
+        <button class="btn" data-key="Fwd">⏭</button>
+      </div>
+
+      <div class="section-label">Volumen</div>
+      <div class="row">
+        <button class="btn" data-key="VolumeDown">−</button>
+        <button class="btn" data-key="VolumeMute">🔇</button>
+        <button class="btn" data-key="VolumeUp">+</button>
+      </div>
+
+      <div class="section-label">Canales</div>
+      <div class="channels" id="channels">
+        <button class="btn" data-launch="12">Netflix</button>
+        <button class="btn" data-launch="837">YouTube</button>
+        <button class="btn" data-launch="13">Prime</button>
+        <button class="btn" data-launch="291097">Disney+</button>
+        <button class="btn" data-launch="2285">Hulu</button>
+        <button class="btn" data-launch="41468">Tubi</button>
+        <button class="btn" data-launch="151908">Max</button>
+        <button class="btn" data-launch="2213">Plex</button>
+      </div>
+
+      <div class="section-label">Texto en TV</div>
+      <div class="text-input-row">
+        <input id="tvText" type="text" placeholder="Escribe y envía…" autocomplete="off" />
+        <button class="btn primary" id="sendTextBtn">Enviar</button>
       </div>
     </div>
-  </main>
-  <dialog class="sheet" id="devicesDialog">
-    <div class="sheet-body">
-      <div class="row" style="justify-content:space-between">
-        <div>
-          <h2 style="margin:0;font-family:var(--display);font-size:1.75rem">Televisores</h2>
-          <p class="muted" style="margin:0.25rem 0 0">Se guardan solo en este navegador.</p>
+
+    <div class="footer-actions">
+      <button class="btn" id="devicesBtn">Dispositivos</button>
+      <button class="btn" id="scanBtn">Escanear red</button>
+      <button class="btn ghost" id="demoBtn">Demo</button>
+    </div>
+
+    <p class="hint" id="hint">Chrome/Edge recomendado. Acepta el permiso de red local cuando aparezca.</p>
+  </div>
+
+  <dialog id="devicesDialog">
+    <div class="dialog-body">
+      <h2>Dispositivos</h2>
+      <div class="device-list" id="deviceList"></div>
+      <div>
+        <label for="newIp">Agregar por IP</label>
+        <div class="text-input-row">
+          <input id="newIp" type="text" placeholder="192.168.1.50" inputmode="decimal" />
+          <button class="btn primary" id="addIpBtn">Agregar</button>
         </div>
-        <button type="button" class="btn" id="closeDevices">Cerrar</button>
       </div>
-      <ul id="deviceList" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem"></ul>
-      <form id="addForm" style="display:flex;flex-direction:column;gap:0.5rem">
-        <h3 class="muted" style="margin:0;font-size:0.9rem">Agregar a mano</h3>
-        <input class="field" id="devName" placeholder="Nombre, por ejemplo Sala" maxlength="40" />
-        <input class="field" id="devHost" placeholder="192.168.0.20" inputmode="decimal" spellcheck="false" autocomplete="off" />
-        <p class="muted" id="formError" hidden></p>
-        <button type="submit" class="btn btn-accent">Guardar</button>
-      </form>
-      <div style="display:flex;flex-direction:column;gap:0.5rem">
-        <h3 class="muted" style="margin:0;font-size:0.9rem">Cómo enlazarlo</h3>
-        <p class="muted">El teléfono o la computadora y el Roku tienen que estar en el mismo Wi-Fi.</p>
-        <p class="muted">En el Roku: Ajustes → Sistema → Ajustes avanzados del sistema → Control por aplicaciones móviles → Permitir.</p>
-        <p class="muted">La IP está en Ajustes → Red → Acerca de.</p>
-        <p class="muted">Chrome y Edge piden permiso de red local: acéptalo. Safari en el iPhone casi siempre bloquea este control.</p>
+      <p class="hint" id="dialogHint"></p>
+      <div class="dialog-actions">
+        <button class="btn" id="closeDevicesBtn">Cerrar</button>
       </div>
     </div>
   </dialog>
-  <script src="./app.js"></script>
+
+  <script>
+    const STORAGE_KEY = "sala-roku-devices-v1";
+    const state = {
+      devices: [],
+      activeId: null,
+      demo: false,
+      lastError: null,
+    };
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        state.devices = data.devices || [];
+        state.activeId = data.activeId || null;
+      } catch {}
+    }
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        devices: state.devices,
+        activeId: state.activeId,
+      }));
+    }
+
+    function active() {
+      return state.devices.find(d => d.id === state.activeId) || null;
+    }
+
+    function baseUrl(d) {
+      if (!d) return null;
+      const host = d.host.replace(/^https?:\/\//, "").replace(/\/$/, "");
+      return `http://${host}:8060`;
+    }
+
+    async function ecp(path, method = "POST") {
+      const d = active();
+      if (state.demo) {
+        console.log("[demo]", method, path);
+        return { ok: true, demo: true };
+      }
+      if (!d) throw new Error("Sin dispositivo activo");
+      const url = baseUrl(d) + path;
+      try {
+        const init = {
+          method,
+          mode: "no-cors",
+          cache: "no-store",
+        };
+        // Local Network Access (Chrome)
+        if (typeof Request !== "undefined") {
+          try {
+            init.targetAddressSpace = "local";
+          } catch {}
+        }
+        await fetch(url, init);
+        return { ok: true };
+      } catch (err) {
+        state.lastError = err;
+        throw err;
+      }
+    }
+
+    async function press(key) {
+      setHint("");
+      try {
+        await ecp(`/keypress/${key}`);
+        flashLed();
+      } catch (e) {
+        setHint(failureHint(e), true);
+      }
+    }
+
+    async function hold(key, phase) {
+      try {
+        await ecp(`/key${phase}/${key}`);
+      } catch {}
+    }
+
+    async function launch(id) {
+      setHint("");
+      try {
+        await ecp(`/launch/${id}`);
+        flashLed();
+        setHint(`Canal ${id} lanzado`, false);
+      } catch (e) {
+        setHint(failureHint(e), true);
+      }
+    }
+
+    async function typeText(text) {
+      if (!text) return;
+      setHint("Enviando texto…");
+      try {
+        for (const ch of text) {
+          const lit = encodeURIComponent(ch);
+          await ecp(`/keypress/Lit_${lit}`);
+          await new Promise(r => setTimeout(r, 40));
+        }
+        setHint("Texto enviado", false);
+        flashLed();
+      } catch (e) {
+        setHint(failureHint(e), true);
+      }
+    }
+
+    function failureHint(err) {
+      const msg = String(err && err.message || err || "");
+      if (/Failed to fetch|NetworkError|Load failed/i.test(msg)) {
+        return "No se pudo contactar el Roku. Revisa IP, misma red Wi‑Fi y permiso de red local en el navegador (Chrome/Edge).";
+      }
+      if (/permission|private|local network/i.test(msg)) {
+        return "Permiso de red local requerido. Recarga y acepta el diálogo del navegador.";
+      }
+      return "Error de conexión. Usa Chrome o Edge en la misma red que el Roku.";
+    }
+
+    function setHint(text, isError) {
+      const el = document.getElementById("hint");
+      el.textContent = text || "Chrome/Edge recomendado. Acepta el permiso de red local cuando aparezca.";
+      el.className = "hint" + (isError ? " error" : text ? " ok" : "");
+    }
+
+    function flashLed() {
+      const led = document.getElementById("led");
+      led.classList.add("on");
+      clearTimeout(flashLed._t);
+      flashLed._t = setTimeout(() => {
+        if (!active() && !state.demo) led.classList.remove("on");
+      }, 400);
+    }
+
+    function renderStatus() {
+      const d = active();
+      const led = document.getElementById("led");
+      const name = document.getElementById("deviceName");
+      const ip = document.getElementById("deviceIp");
+      const badge = document.getElementById("modeBadge");
+      if (state.demo) {
+        led.className = "led on";
+        name.textContent = "Modo demo";
+        ip.textContent = "simulado";
+        badge.textContent = "demo";
+        return;
+      }
+      if (d) {
+        led.className = "led on";
+        name.textContent = d.name || "Roku";
+        ip.textContent = d.host;
+        badge.textContent = "local";
+      } else {
+        led.className = "led";
+        name.textContent = "Sin dispositivo";
+        ip.textContent = "";
+        badge.textContent = "local";
+      }
+    }
+
+    function renderDeviceList() {
+      const list = document.getElementById("deviceList");
+      list.innerHTML = "";
+      if (!state.devices.length) {
+        list.innerHTML = "<p class=\"hint\">Ningún dispositivo guardado.</p>";
+        return;
+      }
+      state.devices.forEach(d => {
+        const item = document.createElement("div");
+        item.className = "device-item" + (d.id === state.activeId ? " active" : "");
+        item.innerHTML = `<div class=\"meta\"><strong>${escapeHtml(d.name || "Roku")}</strong><span>${escapeHtml(d.host)}</span></div>`;
+        const useBtn = document.createElement("button");
+        useBtn.className = "btn";
+        useBtn.textContent = "Usar";
+        useBtn.onclick = (e) => {
+          e.stopPropagation();
+          state.activeId = d.id;
+          state.demo = false;
+          save();
+          renderStatus();
+          renderDeviceList();
+        };
+        const delBtn = document.createElement("button");
+        delBtn.className = "btn ghost";
+        delBtn.textContent = "✕";
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          state.devices = state.devices.filter(x => x.id !== d.id);
+          if (state.activeId === d.id) state.activeId = state.devices[0]?.id || null;
+          save();
+          renderStatus();
+          renderDeviceList();
+        };
+        item.appendChild(useBtn);
+        item.appendChild(delBtn);
+        list.appendChild(item);
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function addDevice(host, name) {
+      host = host.trim().replace(/^https?:\/\//, "").replace(/:\d+$/, "").replace(/\/$/, "");
+      if (!host) return;
+      const id = host;
+      const existing = state.devices.find(d => d.id === id);
+      if (existing) {
+        state.activeId = id;
+      } else {
+        state.devices.push({ id, host, name: name || `Roku ${host}` });
+        state.activeId = id;
+      }
+      state.demo = false;
+      save();
+      renderStatus();
+      renderDeviceList();
+    }
+
+    // Bind remote buttons
+    document.getElementById("remote").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-key], [data-launch]");
+      if (!btn) return;
+      if (btn.dataset.launch) launch(btn.dataset.launch);
+      else if (btn.dataset.key) press(btn.dataset.key);
+    });
+
+    // Hold support for D-pad
+    let holdTimer = null;
+    document.querySelectorAll(".dpad [data-key]").forEach(btn => {
+      const key = btn.dataset.key;
+      if (key === "Select") return;
+      const start = (e) => {
+        e.preventDefault();
+        btn.classList.add("pressed");
+        hold(key, "down");
+        clearInterval(holdTimer);
+        holdTimer = setInterval(() => hold(key, "down"), 120);
+      };
+      const end = () => {
+        btn.classList.remove("pressed");
+        clearInterval(holdTimer);
+        hold(key, "up");
+      };
+      btn.addEventListener("pointerdown", start);
+      btn.addEventListener("pointerup", end);
+      btn.addEventListener("pointerleave", end);
+      btn.addEventListener("pointercancel", end);
+    });
+
+    document.getElementById("sendTextBtn").addEventListener("click", () => {
+      const t = document.getElementById("tvText").value;
+      if (!t) return;
+      document.getElementById("tvText").value = "";
+      typeText(t);
+    });
+
+    document.getElementById("devicesBtn").addEventListener("click", () => {
+      renderDeviceList();
+      document.getElementById("devicesDialog").showModal();
+    });
+    document.getElementById("closeDevicesBtn").addEventListener("click", () => {
+      document.getElementById("devicesDialog").close();
+    });
+    document.getElementById("addIpBtn").addEventListener("click", () => {
+      const ip = document.getElementById("newIp").value;
+      addDevice(ip);
+      document.getElementById("newIp").value = "";
+      document.getElementById("dialogHint").textContent = "Dispositivo agregado.";
+      document.getElementById("dialogHint").className = "hint ok";
+    });
+
+    document.getElementById("demoBtn").addEventListener("click", () => {
+      state.demo = !state.demo;
+      if (state.demo) setHint("Modo demo activo — los comandos solo se registran en consola.", false);
+      else setHint("");
+      renderStatus();
+    });
+
+    document.getElementById("scanBtn").addEventListener("click", async () => {
+      setHint("Escaneando subred… (puede tardar ~30s)");
+      // Best-effort: guess local IP via WebRTC then probe common range
+      let base = "192.168.1.";
+      try {
+        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc.createDataChannel("");
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        await new Promise(r => setTimeout(r, 500));
+        const sdp = pc.localDescription?.sdp || "";
+        const m = sdp.match(/(\d+\.\d+\.\d+)\.\d+/);
+        if (m) base = m[1] + ".";
+        pc.close();
+      } catch {}
+      const found = [];
+      const probes = [];
+      for (let i = 1; i <= 254; i++) {
+        const host = base + i;
+        probes.push(
+          fetch(`http://${host}:8060/query/device-info`, {
+            mode: "no-cors",
+            cache: "no-store",
+            signal: AbortSignal.timeout(900),
+          }).then(() => found.push(host)).catch(() => {})
+        );
+      }
+      await Promise.allSettled(probes);
+      if (found.length) {
+        found.forEach(h => addDevice(h, `Roku ${h}`));
+        setHint(`Encontrados: ${found.join(", ")}`, false);
+      } else {
+        setHint("No se detectaron Rokus. Agrega la IP manualmente (Configuración → Red en el Roku).", true);
+      }
+    });
+
+    const KEYMAP = {
+      ArrowUp: { key: "Up", hold: true }, ArrowDown: { key: "Down", hold: true },
+      ArrowLeft: { key: "Left", hold: true }, ArrowRight: { key: "Right", hold: true },
+      Enter: { key: "Select" }, Escape: { key: "Back" }, " ": { key: "Play" },
+      m: { key: "VolumeMute" }, M: { key: "VolumeMute" },
+      "+": { key: "VolumeUp" }, "=": { key: "VolumeUp" }, "-": { key: "VolumeDown" },
+    };
+    window.addEventListener("keydown", (e) => {
+      if (e.repeat) return;
+      if (e.target.closest("input, textarea, select, dialog")) return;
+      if (document.querySelector("dialog[open]")) return;
+      const m = KEYMAP[e.key];
+      if (!m) return;
+      e.preventDefault();
+      if (m.hold) hold(m.key, "down");
+      else press(m.key);
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.target.closest("input, textarea, select, dialog")) return;
+      const m = KEYMAP[e.key];
+      if (m && m.hold) hold(m.key, "up");
+    });
+
+    load();
+    renderStatus();
+  </script>
 </body>
 </html>
